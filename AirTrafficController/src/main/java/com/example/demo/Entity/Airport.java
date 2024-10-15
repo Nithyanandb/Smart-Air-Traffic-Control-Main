@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 @Entity
 public class Airport {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
 

@@ -6,10 +6,26 @@
 </head>
 <body>
 <h1>Airports</h1>
-<form th:action="@{/addAirport}" method="GET">
+<form th:action="@{/addAirport}" method="POST">
 
+    <label> Airport Name :</label>
+    <input type="number" name="id">
+    <label> Airport Name :</label>
+    <input type="text" name="name">
+    <label> Airport Code :</label>
+    <input type="text" name="code">
+    <label> Airport Location :</label>
+    <input type="text" name="location">
+<button>Submit</button>
 
 </form>
 
+
+<!--<div>-->
+<!--    <table>-->
+<!--        <li th:action value={airport} method="GET">-->
+<!--        </li>-->
+<!--    </table>-->
+<!--</div>-->
 </body>
 </html>
