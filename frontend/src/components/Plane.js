@@ -7,34 +7,51 @@ function Plane() {
   const [planes, setPlanes] = useState([]);
   const [name, setName] = useState("");
   const [model, setModel] = useState("");
+  const [airport, setAirport] = useState(""); // Add state for airport
+  const [airports, setAirports] = useState([]); // To fetch and show airports
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    // Fetch list of airports for the dropdown
+    const fetchAirports = async () => {
+      try {
+        const response = await axios.get("/airports");
+        setAirports(response.data); // Assuming /airports returns a list
+      } catch (error) {
+        setError(error.message);
+      }
+    };
+
     const fetchPlanes = async () => {
       try {
         const response = await axios.get("/planes");
         setPlanes(response.data);
       } catch (error) {
         setError(error.message);
-        // Log the error on the server-side
-        axios.post("/log-error", { error: error.message });
       }
     };
+
+    fetchAirports();
     fetchPlanes();
   }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (!name || !model) {
+    if (!name || !model || !airport) {  // Validate if all fields are filled
       setError("Please fill in all fields.");
       return;
     }
-    // Add more robust validation here
+
     try {
-      const response = await axios.post("/planes", { name, model });
+      const response = await axios.post("/planes", { 
+        name, 
+        model, 
+        airport // Send airport in the POST request
+      });
       setPlanes([...planes, response.data]);
       setName("");
       setModel("");
+      setAirport(""); // Reset the airport after submission
     } catch (error) {
       setError(error.message);
     }
@@ -101,20 +118,47 @@ function Plane() {
           </div>
           <div className="form-group">
             <label htmlFor="model">
-              Plane Model <div className="py-4">
-              <input
-                type="text"
-                id="model"
-                name="model"
-                className="form-control"
-                value={model}
-                onChange={(event) => setModel(event.target.value)}
-                required
-                aria-required="true"
-                aria-label="Plane Model"
-              /></div>
+              Plane Model
+              <div className="py-4">
+                <input
+                  type="text"
+                  id="model"
+                  name="model"
+                  className="form-control"
+                  value={model}
+                  onChange={(event) => setModel(event.target.value)}
+                  required
+                  aria-required="true"
+                  aria-label="Plane Model"
+                />
+              </div>
             </label>
           </div>
+          <div className="form-group">
+            <label htmlFor="airport">
+              Airport
+              <div className="py-4">
+                <select
+                  id="airport"
+                  name="airport"
+                  className="form-control"
+                  value={airport}
+                  onChange={(event) => setAirport(event.target.value)}
+                  required
+                  aria-required="true"
+                  aria-label="Airport"
+                >
+                  <option value="">Select an Airport</option>
+                  {airports.map((airport) => (
+                    <option key={airport.id} value={airport.id}>
+                      {airport.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </label>
+          </div>
+
           <button type="submit" className="plane-btn py-2">
             Add Plane
           </button>
