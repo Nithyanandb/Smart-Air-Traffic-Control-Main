@@ -1,0 +1,112 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    color: #ffffff;
+    background-size: cover;
+    background-position: center;
+}
+.overlay {
+      background: black;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+  }
+
+  .content {
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      background: black;
+  }
+
+  .navbar-brand {
+      font-weight: bold;
+      color: #ffffff !important;
+  }
+
+  .navbar-nav .nav-link {
+      color: #ffffff !important;
+  }
+
+  .navbar-nav .nav-link:hover {
+      color: #6a6767 !important;
+  } 
+
+  h1, h2, h3, h4, h5, h6 {
+      color: #ffffff;
+  }
+
+  h1 {
+      font-size: 2.5rem;
+      font-weight: bold;
+  }
+
+  .container {
+      max-width: 1140px;
+      z-index: 2;
+  }
+
+  .card-section {
+      margin-top: 2rem;
+  }
+
+  .card {
+      border: none;
+      background: black;
+      font-size: x-small;
+      color: aliceblue;
+  }
+.card i
+{
+font-size: 2rem;
+padding-top: 30px;
+}
+.card a{
+color: rgb(158, 158, 158);
+padding-bottom: 20pt;
+}
+
+
+
+ 
+.btn {
+font-size: 1.1rem;
+padding: 0.5rem 1rem;
+border: none;
+background: local;
+color: #ffffff;
+position: relative;
+text-align:center;
+text-decoration: none;
+}
+
+
+
+.btn:hover {
+background: fixed;
+color: #ffffff;
+}
+
+
+
+  
+  .footer {
+      color: white;
+      padding: 1.5rem 0;
+      margin-top: auto;
+      width: 100%;
+      text-align: center;
+      background: black;
+  }
+
+  @media (max-width: 768px) {
+      h1 {
+          font-size: 2rem;
+      }
+  }

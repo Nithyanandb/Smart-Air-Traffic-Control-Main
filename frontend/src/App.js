@@ -1,15 +1,23 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route,Routes } from 'react-router-dom';
 import Airport from './components/Airport';
+import Plane from './components/Plane';
+import Weather from './components/Weather';
+import Home from './components/Home';
 
-const App = () => {
+
+
+function App() {
     return (
-        <Router>
+        <BrowserRouter>
             <Routes>
+                <Route path="/" element={<Home />} />
                 <Route path="/airports" element={<Airport />} />
+                <Route path="/planes" element={<Plane />} />
+                <Route path="/weather" element={<Weather />} />
             </Routes>
-        </Router>
+        </BrowserRouter>
     );
-};
+}
 
 export default App;
