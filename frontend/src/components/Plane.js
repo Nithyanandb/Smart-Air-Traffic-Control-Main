@@ -7,16 +7,16 @@ function Plane() {
   const [planes, setPlanes] = useState([]);
   const [name, setName] = useState("");
   const [model, setModel] = useState("");
-  const [airport, setAirport] = useState(""); // Add state for airport
-  const [airports, setAirports] = useState([]); // To fetch and show airports
+  const [airport, setAirport] = useState(""); 
+  const [airports, setAirports] = useState([]); 
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Fetch list of airports for the dropdown
+    
     const fetchAirports = async () => {
       try {
         const response = await axios.get("/airports");
-        setAirports(response.data); // Assuming /airports returns a list
+        setAirports(response.data); 
       } catch (error) {
         setError(error.message);
       }
@@ -37,7 +37,7 @@ function Plane() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (!name || !model || !airport) {  // Validate if all fields are filled
+    if (!name || !model || !airport) {  
       setError("Please fill in all fields.");
       return;
     }
@@ -46,12 +46,12 @@ function Plane() {
       const response = await axios.post("/planes", { 
         name, 
         model, 
-        airport // Send airport in the POST request
+        airport 
       });
       setPlanes([...planes, response.data]);
       setName("");
       setModel("");
-      setAirport(""); // Reset the airport after submission
+      setAirport("");
     } catch (error) {
       setError(error.message);
     }

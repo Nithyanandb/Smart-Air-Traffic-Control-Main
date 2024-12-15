@@ -1,0 +1,59 @@
+.container {
+    max-width: 1140px;
+    z-index: 2;
+}
+
+.card-section {
+    margin-top: 2rem;
+}
+
+.card {
+    border: none;
+    background: black;
+    font-size: x-small;
+    color: aliceblue;
+}
+.card i
+{
+font-size: 2rem;
+padding-top: 30px;
+}
+.card a{
+color: rgb(112, 109, 109);
+padding-bottom: 20pt;
+}
+
+
+.card-body{
+  width: 300px;
+}
+
+.btn {
+font-size: 1.1rem;
+padding: 0.5rem 1rem;
+border: none;
+background: local;
+color: #ffffff;
+position: relative;
+text-align:center;
+text-decoration: none;
+}
+
+
+
+.btn:hover {
+background: fixed;
+color: #ffffff;
+}
+
+
+
+
+.footer {
+    color: white;
+    padding: 0rem 0;
+    margin-top: 183px;
+    width: 100%;
+    text-align: center;   
+    background: black;
+}
