@@ -7,6 +7,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @Entity
 public class Flight {

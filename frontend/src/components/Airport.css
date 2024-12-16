@@ -103,57 +103,66 @@
 }
 
 .airport-box {
-  
   padding: 20px;
   border-radius: 10px;
+  background-color: #000000;
+  box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
 }
 
 .airport-cards {
   display: inline-flex;
-position:sticky;
-  justify-content: left;
+  flex-wrap: wrap;
+  justify-content: center;
   width: 100%;
   border: 1px solid #000000;
-  box-shadow: 0.1px 0.1px 0px rgba(255, 255, 255, 10); 
+  box-shadow: 0.1px 0.1px 0px rgba(255, 255, 255, 10);
 }
+
 .card {
+  
   padding: 20px;
- 
-border-radius: 0%;
-  margin: 20px;
+  border-radius: 3px;
+  margin-left: 20px;
+  margin-bottom: 0%;
+  margin-right: 20px;
   width: calc(33.33% - 20px);
-
-  transform: translateX(-100%); 
-  animation: fly-in-left 1s ease-out forwards; 
-  transition: 0.5s ease-in-out;
+ 
+  box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+ 
 }
 
+.card:hover {
+  cursor: pointer;
+}
 
 .card-title {
   font-weight: bold;
   font-size: 24px;
-  margin-bottom: 10px;
-  
+
 }
 
 .card-text {
   font-size: 18px;
-  margin-bottom: 20px;
+  
 }
 
 .fly-in {
   animation: fly-in 1s ease-out;
 }
-@keyframes fly-in-left {
+
+@keyframes fly-in {
   0% {
-    opacity: 0;
-    transform: translateX(-100%);
+    opacity: 0px;
+      overflow:hidden;
+      transform: translateX(-100%);
   }
   100% {
-    opacity: 1;
-    transform: translateX(0);
+      overflow:hidden ;
+      transform: translateX(0%);
   }
 }
+
+
 
 @media only screen and (max-width: 768px) {
   .card {
@@ -161,12 +170,23 @@ border-radius: 0%;
   }
 }
 
-
-
-
 @media only screen and (max-width: 480px) {
   .card {
     width: 100%;
   }
 }
+.airport-detail {
+  width: 100%;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-top: -250px;
+  color: #000;
+  animation: rollDown 1s ease-out;
+  transition: opacity 0.5s ease-in-out;
+  opacity: 0;
+}
 
+.airport-detail.show {
+  opacity: 1;
+}

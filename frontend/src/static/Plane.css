@@ -11,13 +11,23 @@
     text-decoration: none;
 }
 
+
+.jk{
+    color: #e7e7e7;
+    background: #a64a4a;
+}
+.jk:hover{
+    background: local;
+}
+
 .fly-high .nav-me:hover {
     color: #ccc;
 }
 
 .fly-high .plane-cont {
     max-width: 800px;
-    margin: auto;
+    margin-top: -30px;;
+    
 }
 
 
@@ -45,6 +55,9 @@ color: #969696;
     color: #000000;
 }
 
+.fo{
+    color: #000;
+}
 
 .fly-high .plane-btn {
     width: 100%;

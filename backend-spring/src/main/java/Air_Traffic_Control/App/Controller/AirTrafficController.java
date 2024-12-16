@@ -2,6 +2,7 @@ package Air_Traffic_Control.App.Controller;
 
 import Air_Traffic_Control.App.Entity.*;
 import Air_Traffic_Control.App.Service.AirportService;
+import Air_Traffic_Control.App.Service.FlightService;
 import Air_Traffic_Control.App.Service.PlaneService;
 import Air_Traffic_Control.App.Service.RouteService;
 import Air_Traffic_Control.App.Service.WeatherService;
@@ -15,7 +16,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 @RestController
 @RequestMapping("/")
 public class AirTrafficController {
@@ -25,6 +25,9 @@ public class AirTrafficController {
 
     @Autowired
     private PlaneService planeService;
+
+    @Autowired
+    private FlightService flightService;
 
     @Autowired
     private RouteService routeService;
@@ -54,7 +57,6 @@ public class AirTrafficController {
         return ResponseEntity.ok(airportsWithWeather);
     }
 
-
     @PostMapping("/airports")
     public ResponseEntity<Map<String, Object>> addAirport(@RequestBody Airport airport) {
         if (airport.getName() == null || airport.getCode() == null || airport.getLocation() == null) {
@@ -69,7 +71,6 @@ public class AirTrafficController {
 
         Airport createdAirport = airportService.addAirport(airport);
 
-
         Weather weatherData = weatherService.getWeather(createdAirport.getLocation());
         Map<String, Object> response = new HashMap<>();
         response.put("airport", createdAirport);
@@ -83,7 +84,6 @@ public class AirTrafficController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-
     @GetMapping("/planes")
     public ResponseEntity<List<Plane>> getPlanes() {
         List<Plane> planes = planeService.getAllPlane();
@@ -91,13 +91,28 @@ public class AirTrafficController {
     }
 
     @PostMapping("/planes")
-    public ResponseEntity<Plane> addPlane(@RequestBody Plane plane) {
-        if (plane.getModel() == null || plane.getCapacity() <= 0 || plane.getAirport() == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(null);
+    public ResponseEntity<?> addPlane(@RequestBody Plane plane) {
+        try {
+            Plane createdPlane = planeService.addPlane(plane);
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdPlane);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", e.getMessage()));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", e.getMessage()));
         }
-        Plane createdPlane = planeService.addPlane(plane);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdPlane);
+    }
+
+
+    @GetMapping("/flights")
+    public ResponseEntity<List<Flight>> getFlights() {
+        List<Flight> flights = flightService.getAllFlights();
+        return ResponseEntity.ok(flights);
+    }
+
+    @PostMapping("/flights")
+    public ResponseEntity<Flight> addFlight(@RequestBody Flight flight) {
+        flightService.addFlight(flight.getOrigin().getId(), flight.getDestination().getId(), flight.getDistance());
+        return ResponseEntity.status(HttpStatus.CREATED).body(flight);
     }
 
     @GetMapping("/route")

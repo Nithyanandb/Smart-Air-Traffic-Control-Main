@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import "./Airport.css";
+import Nav_Bar from "./Nav_Bar";
 
 function Airport() {
   const [airports, setAirports] = useState([]);
@@ -9,9 +10,10 @@ function Airport() {
   const [code, setCode] = useState("");
   const [location, setLocation] = useState("");
   const [error, setError] = useState(null);
-
-  // Fetch airports with weather details on component load
+  const [selectedAirport, setSelectedAirport] = useState(null);
+ const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
+    setIsLoading(true);
     const fetchAirports = async () => {
       try {
         const response = await axios.get("/airports");
@@ -24,11 +26,14 @@ function Airport() {
         setError("Failed to fetch airports. Please try again later.");
         console.error(error);
       }
+      finally {
+        setIsLoading(false);
+      }
     };
+
     fetchAirports();
   }, []);
 
-  // Handle form submission to add a new airport
   const handleSubmit = async (event) => {
     event.preventDefault();
     setError(null);
@@ -57,138 +62,141 @@ function Airport() {
     }
   };
 
+  const handleAirportClick = (airport) => {
+    setSelectedAirport(airport);
+  };
+
   return (
     <div>
-      <div  className="fly-high">     <nav className="nav-bar" role="navigation" aria-label="main navigation">
-        <Link className="nav-link" to="/">
-          Air Traffic Control
-        </Link>
-        <div className="nav-y">
-          <ul className="nav-b">
-            <li className="nav-item">
-              <Link className="nav-l" to="/">
-                Home
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-l" to="/airports">
-                Airports
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-l" to="/planes">
-                Planes
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-l" to="/route">
-                Find Shortest Route
-              </Link>
-            </li>
-          </ul>
-        </div>
-      </nav>
+      <div className="fly-high">
+        <Nav_Bar />
 
-      <div className="plane-cont">
-        <h2 className="text-center">Manage Airports</h2>
-        {error && (
-          <div className="alert alert-danger" role="alert">
-            <p>{error}</p>
+        <div className="plane-cont">
+          <h2 className="text-center">Manage Airports</h2>
+          {error && (
+            <div className="alert alert-danger" role="alert">
+              <p>{error}</p>
+            </div>
+          )}
+
+          <div className="airport-box">
+            <form onSubmit={handleSubmit}>
+              <div className="form-group">
+                <label htmlFor="name">
+                  Airport Name
+                  <div className="py-4">
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      className="form-control"
+                      value={name}
+                      onChange={(event) => setName(event.target.value)}
+                      required
+                      aria-required="true"
+                      aria-label="Airport Name"
+                    />
+                  </div>
+                </label>
+              </div>
+              <div className="form-group">
+                <label htmlFor="code">
+                  Airport Code
+                  <div className="py-4">
+                    <input
+                      type="text"
+                      id="code"
+                      name="code"
+                      className="form-control"
+                      value={code}
+                      onChange={(event) => setCode(event.target.value)}
+                      required
+                      aria-required="true"
+                      aria-label="Airport Code"
+                    />
+                  </div>
+                </label>
+              </div>
+              <div className="form-group">
+                <label htmlFor="location">
+                  Airport Location
+                  <div className="py-4">
+                    <input
+                      type="text"
+                      id="location"
+                      name="location"
+                      className="form-control"
+                      value={location}
+                      onChange={(event) => setLocation(event.target.value)}
+                      required
+                      aria-required="true"
+                      aria-label="Airport Location"
+                    />
+                  </div>
+                </label>
+              </div>
+              <button type="submit" className="plane-btn py-2">
+                Add Airport
+              </button>
+            </form>
           </div>
-        )}
+        </div>
 
-        <div className="airport-box">
-          <form onSubmit={handleSubmit}>
-            <div className="form-group">
-              <label htmlFor="name">
-                Airport Name
-                <div className="py-4">
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    className="form-control"
-                    value={name}
-                    onChange={(event) => setName(event.target.value)}
-                    required
-                    aria-required="true"
-                    aria-label="Airport Name"
-                  />
-                </div>
-              </label>
-            </div>
-            <div className="form-group">
-              <label htmlFor="code">
-                Airport Code
-                <div className="py-4">
-                  <input
-                    type="text"
-                    id="code"
-                    name="code"
-                    className="form-control"
-                    value={code}
-                    onChange={(event) => setCode(event.target.value)}
-                    required
-                    aria-required="true"
-                    aria-label="Airport Code"
-                  />
-                </div>
-              </label>
-            </div>
-            <div className="form-group">
-              <label htmlFor="location">
-                Airport Location
-                <div className="py-4">
-                  <input
-                    type="text"
-                    id="location"
-                    name="location"
-                    className="form-control"
-                    value={location}
-                    onChange={(event) => setLocation(event.target.value)}
-                    required
-                    aria-required="true"
-                    aria-label="Airport Location"
-                  />
-                </div>
-              </label>
-            </div>
-            <button type="submit" className="plane-btn py-2">
-              Add Airport
-            </button>
-          </form>
-        </div>
-        </div>
- 
-        <div className="tab mt-4">
-          <h2 className="text-center mt-5 py-2">Airports</h2>
-          <div className="airport-cards">
+        <div className="tab mt-5">
+          <h2 className="text-center mt-5 py-5">Airports</h2>
+          <div className="airport-cards ">
             {airports.map((airport) => (
-              <div key={airport.id} className="card bg-white" style={{color:'black'}}> 
+              <div key={airport.id} className="card fly-in bg-white" style={{ color: 'black' }} onClick={() => handleAirportClick(airport)}>
                 <h3 className="card-title">{airport.name}</h3>
-                <br></br>
+                <br />
                 <p className="card-text">Code: {airport.code}</p>
                 <p className="card-text">Location: {airport.location}</p>
                 {airport.weather ? (
                   <div className="dum">
-                 
-                    <p className="card-text">
-                      Temperature: {airport.weather.temp}°C
-                    </p>
-                    <p className="card-text">Humidity: {airport.weather.humidity}%</p>
-                    <p className="card-text">Pressure: {airport.weather.pressure} hPa</p>
-                    <p className="card-text">Wind Speed: {airport.weather.speed} m/s</p>
-                  </div>
-                ) : (
-                  <p>Weather data unavailable</p>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
+                                <p className="card-text">
+              Temperature: {airport.weather.temp}°C
+            </p>
+            <p className="card-text">Humidity: {airport.weather.humidity}%</p>
+            <p className="card-text">Pressure: {airport.weather.pressure} hPa</p>
+<p className="card-text">Wind Speed: {airport.weather.speed} m/s</p>
+</div>
+) : (
+<p>Weather data unavailable</p>
+)}
+</div>
+))}
+</div>
+</div>
 
+
+{selectedAirport && (
+  <div className={`airport-detail ${selectedAirport ? 'show' : ''}`}>
+    <h2>Airport Details</h2>
+    <p>
+      <strong>Name:</strong> {selectedAirport.name}
+    </p>
+    <p>
+      <strong>Code:</strong> {selectedAirport.code}
+    </p>
+    <p>
+      <strong>Location:</strong> {selectedAirport.location}
+    </p>
+    <p>
+      <strong>Tracks:</strong> {selectedAirport.tracks}
+    </p>
+    <p>
+      <strong>Allotted:</strong> {selectedAirport.allotted}
+    </p>
+    <p>
+      <strong>Free:</strong> {selectedAirport.free}
+    </p>
+    <p>
+      <strong>Occupied:</strong> {selectedAirport.occupied}
+    </p>
+  </div>
+)}
+</div>
+</div>
+);
+}
 export default Airport;

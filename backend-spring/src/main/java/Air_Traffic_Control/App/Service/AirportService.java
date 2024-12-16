@@ -4,7 +4,6 @@ import Air_Traffic_Control.App.Entity.Airport;
 import Air_Traffic_Control.App.Repository.AirportRepository;
 import org.springframework.stereotype.Service;
 
-
 import java.util.List;
 
 @Service

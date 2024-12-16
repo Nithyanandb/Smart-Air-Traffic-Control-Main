@@ -1,23 +1,29 @@
-package Air_Traffic_Control.App.Entity;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import lombok.Data;
+    package Air_Traffic_Control.App.Entity;
 
 
-@Data
-@Entity
-public class Plane {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
-    private String name;
-    private String model;
-    private int capacity;
-    private String Airport;
-}
+    import jakarta.persistence.*;
+    import lombok.Data;
+    import org.antlr.v4.runtime.misc.NotNull;
 
+    @Data
+    @Entity
+    public class Plane {
+
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private Long id;
+
+        private String name;
+
+        @NotNull
+        private String model;
+
+        private int capacity;
+
+        @ManyToOne
+        @JoinColumn(name = "airport_id")
+        private Airport airport;
+
+    }
