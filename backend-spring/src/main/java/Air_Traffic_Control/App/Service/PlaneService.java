@@ -13,8 +13,9 @@ public class PlaneService {
 
 
 private final PlaneRepository planeRepository;
-    public PlaneService( PlaneRepository planeRepository) {
-
+private final AirportService airportService;
+    public PlaneService( AirportService airportService,PlaneRepository planeRepository) {
+this.airportService = airportService;
         this.planeRepository = planeRepository;
     }
 
@@ -22,10 +23,14 @@ private final PlaneRepository planeRepository;
         return planeRepository.findAll();
     }
 
+
     public Plane addPlane(Plane plane) {
+        Airport airport = airportService.getAirportByCode(plane.getAirport().getCode());
+        plane.setAirport(airport);
+        airport.getPlanes().add(plane);
+        airportService.addAirport(airport);
         return planeRepository.save(plane);
     }
-
 
     public Plane getPlaneById(Long id) {
         return planeRepository.findById(id).orElse(null);

@@ -84,22 +84,22 @@ public class AirTrafficController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+
     @GetMapping("/planes")
-    public ResponseEntity<List<Plane>> getPlanes() {
+    public List<Plane> getPlanes() {
         List<Plane> planes = planeService.getAllPlane();
-        return ResponseEntity.ok(planes);
+        planes.forEach(plane -> {
+            if (plane.getAirport() != null) {
+                plane.setAirport(airportService.getAirportByCode(plane.getAirport().getCode()));
+            }
+        });
+        return planes;
     }
 
-    @PostMapping("/planes")
-    public ResponseEntity<?> addPlane(@RequestBody Plane plane) {
-        try {
-            Plane createdPlane = planeService.addPlane(plane);
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdPlane);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", e.getMessage()));
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", e.getMessage()));
-        }
+    public Plane addPlane(Plane plane) {
+        Airport airport = airportService.getAirportByCode(plane.getAirport().getCode());
+        plane.setAirport(airport);
+        return planeService.addPlane(plane);
     }
 
 

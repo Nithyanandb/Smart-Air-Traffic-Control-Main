@@ -1,7 +1,6 @@
 package Air_Traffic_Control.App.Entity;
 
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -21,7 +20,7 @@ public class Airport {
 
     private String location;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "airport")
     private List<Plane> planes;
-
 }

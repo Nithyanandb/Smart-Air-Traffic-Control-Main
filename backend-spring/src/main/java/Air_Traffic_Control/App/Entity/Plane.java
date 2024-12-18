@@ -1,29 +1,26 @@
-    package Air_Traffic_Control.App.Entity;
+package Air_Traffic_Control.App.Entity;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
+import lombok.Data;
+
+@Data
+@Entity
+public class Plane {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String name;
+
+    private String model;
+
+    private int capacity;
 
 
-
-
-    import jakarta.persistence.*;
-    import lombok.Data;
-    import org.antlr.v4.runtime.misc.NotNull;
-
-    @Data
-    @Entity
-    public class Plane {
-
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Long id;
-
-        private String name;
-
-        @NotNull
-        private String model;
-
-        private int capacity;
-
-        @ManyToOne
-        @JoinColumn(name = "airport_id")
-        private Airport airport;
-
-    }
+    @ManyToOne
+    @JoinColumn(name = "airport_id")
+    @JsonBackReference
+    private Airport airport;
+}
