@@ -96,10 +96,12 @@ public class AirTrafficController {
         return planes;
     }
 
-    public Plane addPlane(Plane plane) {
+    @PostMapping("/planes")
+    public ResponseEntity<Plane> addPlane(@RequestBody Plane plane) {
         Airport airport = airportService.getAirportByCode(plane.getAirport().getCode());
         plane.setAirport(airport);
-        return planeService.addPlane(plane);
+        Plane createdPlane = planeService.addPlane(plane);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdPlane);
     }
 
 

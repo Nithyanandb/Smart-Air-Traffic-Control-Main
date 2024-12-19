@@ -18,9 +18,20 @@ public class Plane {
 
     private int capacity;
 
-
     @ManyToOne
     @JoinColumn(name = "airport_id")
     @JsonBackReference
     private Airport airport;
+
+
+    public Plane() {}
+
+    public Plane(Airport airport, String name, String model, int capacity) {
+        if (airport != null) {
+            this.airport = airport;
+        }
+        this.name = name;
+        this.model = model;
+        this.capacity = capacity;
+    }
 }
